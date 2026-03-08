@@ -5,6 +5,8 @@
 (function () {
   'use strict';
 
+  const LANG = document.documentElement.lang || 'en';
+
   /* ---- Theme Toggle ---- */
   const root = document.documentElement;
   const themeBtn = document.getElementById('theme-toggle');
@@ -16,15 +18,10 @@
   }
 
   const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    applyTheme(saved);
-  } else {
-    applyTheme('light');
-  }
+  applyTheme(saved || 'light');
 
   themeBtn?.addEventListener('click', () => {
-    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    applyTheme(next);
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
   });
 
   /* ---- Header Scroll Effect ---- */
@@ -72,9 +69,7 @@
       const id = section.getAttribute('id');
       if (scrollY >= top && scrollY < top + height) {
         navLinks.forEach((l) => l.classList.remove('active'));
-        document
-          .querySelector(`.main-nav a[href="#${id}"]`)
-          ?.classList.add('active');
+        document.querySelector(`.main-nav a[href="#${id}"]`)?.classList.add('active');
       }
     });
   }
@@ -101,21 +96,391 @@
     animatedEls.forEach((el) => el.classList.add('visible'));
   }
 
-  /* ---- Contact Form (placeholder) ---- */
+  /* ============================================================
+     DASHBOARD INTERACTIVE TABS
+     ============================================================ */
+
+  const CHART_SVG = `<svg viewBox="0 0 600 160" preserveAspectRatio="none" class="chart-line">
+    <polyline points="0,140 50,120 100,130 150,90 200,100 250,60 300,70 350,40 400,55 450,30 500,45 550,20 600,10" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <polyline points="0,140 50,120 100,130 150,90 200,100 250,60 300,70 350,40 400,55 450,30 500,45 550,20 600,10" fill="url(#chart-fill)" stroke="none"/>
+    <defs><linearGradient id="chart-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--accent)" stop-opacity="0.25"/><stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/></linearGradient></defs>
+  </svg>`;
+
+  const CHART_BAR = `<svg viewBox="0 0 600 160" preserveAspectRatio="none" class="chart-line">
+    <rect x="20" y="80" width="40" height="80" rx="4" fill="var(--accent)" opacity=".7"/>
+    <rect x="80" y="50" width="40" height="110" rx="4" fill="var(--accent)" opacity=".8"/>
+    <rect x="140" y="90" width="40" height="70" rx="4" fill="var(--accent)" opacity=".6"/>
+    <rect x="200" y="30" width="40" height="130" rx="4" fill="var(--accent)"/>
+    <rect x="260" y="60" width="40" height="100" rx="4" fill="var(--accent)" opacity=".75"/>
+    <rect x="320" y="40" width="40" height="120" rx="4" fill="var(--accent)" opacity=".9"/>
+    <rect x="380" y="70" width="40" height="90" rx="4" fill="var(--accent)" opacity=".65"/>
+    <rect x="440" y="20" width="40" height="140" rx="4" fill="var(--accent)"/>
+    <rect x="500" y="55" width="40" height="105" rx="4" fill="var(--accent)" opacity=".8"/>
+    <rect x="560" y="35" width="40" height="125" rx="4" fill="var(--accent)" opacity=".85"/>
+  </svg>`;
+
+  function renderMetrics(items) {
+    return `<div class="dash-cards">${items.map(m =>
+      `<div class="dash-metric">
+        <span class="dash-metric-label">${m[0]}</span>
+        <span class="dash-metric-value">${m[1]}</span>
+        <span class="dash-metric-change ${m[3]}">${m[2]}</span>
+      </div>`
+    ).join('')}</div>`;
+  }
+
+  function renderTable(title, headers, rows, cols) {
+    return `<div class="dash-section-title">${title}</div>
+    <div class="dash-table">
+      <div class="dash-table-head" style="grid-template-columns:${cols}">${headers.map(h => `<span>${h}</span>`).join('')}</div>
+      ${rows.map(r => `<div class="dash-table-row" style="grid-template-columns:${cols}">${r.map(c => `<span>${c}</span>`).join('')}</div>`).join('')}
+    </div>`;
+  }
+
+  function renderToggles(title, items) {
+    return `<div class="dash-section-title">${title}</div>
+    <div class="dash-table">${items.map(i =>
+      `<div class="dash-toggle-row">
+        <span>${i[0]}</span>
+        <div class="dash-toggle-switch ${i[1] ? 'on' : 'off'}"></div>
+      </div>`
+    ).join('')}</div>`;
+  }
+
+  function renderDesign(title, colors, fonts) {
+    return `<div class="dash-section-title">${title}</div>
+    <div class="dash-color-row">${colors.map((c, i) =>
+      `<div class="dash-color-swatch${i === 0 ? ' selected' : ''}" style="background:${c}"></div>`
+    ).join('')}</div>
+    ${fonts.map(f =>
+      `<div class="dash-font-row"><span class="dash-font-name">${f[0]}</span><span>${f[1]}</span></div>`
+    ).join('')}`;
+  }
+
+  const T = {
+    en: {
+      overview: () => renderMetrics([
+        ['Revenue (MTD)', 'HK$284,520', '+18.3%', 'positive'],
+        ['Orders', '1,247', '+12.1%', 'positive'],
+        ['Visitors', '34.2K', '+8.7%', 'positive'],
+        ['Tickets', '3', 'Open', 'neutral']
+      ]) + `<div class="dash-chart">${CHART_SVG}</div>`,
+
+      products: () => renderTable('Products (24)',
+        ['Product', 'Price', 'Stock', 'Status'],
+        [
+          ['Premium Wireless Headphones', 'HK$2,399', '142', '<span class="dash-badge green">Active</span>'],
+          ['Bamboo Desk Organiser', 'HK$459', '87', '<span class="dash-badge green">Active</span>'],
+          ['Ergonomic Mouse Pad', 'HK$189', '0', '<span class="dash-badge red">Out of stock</span>'],
+          ['USB-C Hub Pro 7-in-1', 'HK$699', '53', '<span class="dash-badge green">Active</span>'],
+          ['Minimalist Leather Wallet', 'HK$349', '216', '<span class="dash-badge yellow">Draft</span>']
+        ], '2fr 1fr 1fr 1fr'),
+
+      pages: () => renderTable('Pages',
+        ['Page', 'URL', 'Status'],
+        [
+          ['Home', '/', '<span class="dash-badge green">Published</span>'],
+          ['About Us', '/about', '<span class="dash-badge green">Published</span>'],
+          ['FAQ', '/faq', '<span class="dash-badge green">Published</span>'],
+          ['Shipping Policy', '/shipping', '<span class="dash-badge yellow">Draft</span>'],
+          ['Returns', '/returns', '<span class="dash-badge green">Published</span>']
+        ], '2fr 2fr 1fr'),
+
+      design: () => renderDesign('Theme — Modern Minimal',
+        ['#6366f1', '#0ea5e9', '#f97316', '#10b981', '#f43f5e', '#8b5cf6'],
+        [['Headings', 'Space Grotesk — Bold'], ['Body', 'Inter — Regular'], ['Accent', 'Indigo 500 (#6366f1)']]),
+
+      payments: () => renderToggles('Payment Gateways', [
+        ['Stripe', true], ['PayPal', true], ['Adyen', false],
+        ['AlipayHK', true], ['Octopus', true], ['PayMe (HSBC)', false],
+        ['PayDollar', false], ['Airwallex', true], ['Monobank', false]
+      ]),
+
+      features: () => renderToggles('Store Features', [
+        ['Dark Mode', true], ['Multi-language (EN, ES, UK)', true],
+        ['Customer Reviews', true], ['Wishlist', false],
+        ['Live Chat Widget', true], ['Cookie Consent Banner', true],
+        ['Social Login', false], ['Inventory Alerts', true]
+      ]),
+
+      analytics: () => renderMetrics([
+        ['Conversion Rate', '3.6%', '+0.4%', 'positive'],
+        ['Avg. Order Value', 'HK$228', '+11.2%', 'positive'],
+        ['Bounce Rate', '42.1%', '-3.8%', 'positive']
+      ]) + `<div class="dash-chart">${CHART_BAR}</div>`,
+
+      support: () => renderTable('Support Tickets',
+        ['ID', 'Subject', 'Status', 'Updated'],
+        [
+          ['#1042', 'Shipping delay to Kowloon', '<span class="dash-badge yellow">Pending</span>', '2h ago'],
+          ['#1041', 'Payment not processed', '<span class="dash-badge green">Resolved</span>', '5h ago'],
+          ['#1039', 'Wrong item received', '<span class="dash-badge red">Urgent</span>', '1d ago'],
+          ['#1038', 'Refund request', '<span class="dash-badge green">Resolved</span>', '2d ago']
+        ], '80px 2fr 1fr 1fr'),
+
+      email: () => renderTable('Inbox',
+        ['From', 'Subject', 'Time'],
+        [
+          ['<strong>John Chan</strong>', 'Re: Order #8841 confirmation', '11:32 AM'],
+          ['<strong>Sarah Wong</strong>', 'Partnership inquiry', '10:15 AM'],
+          ['<strong>Stripe</strong>', 'Your weekly payout summary', '9:00 AM'],
+          ['<strong>Mike Liu</strong>', 'Bulk order discount?', 'Yesterday'],
+          ['<strong>Support Bot</strong>', 'New ticket #1042 assigned', 'Yesterday']
+        ], '1.5fr 2.5fr 1fr')
+    },
+
+    es: {
+      overview: () => renderMetrics([
+        ['Ingresos (MTD)', 'HK$284,520', '+18.3%', 'positive'],
+        ['Pedidos', '1,247', '+12.1%', 'positive'],
+        ['Visitantes', '34.2K', '+8.7%', 'positive'],
+        ['Tickets', '3', 'Abiertos', 'neutral']
+      ]) + `<div class="dash-chart">${CHART_SVG}</div>`,
+
+      products: () => renderTable('Productos (24)',
+        ['Producto', 'Precio', 'Stock', 'Estado'],
+        [
+          ['Auriculares Inalámbricos Premium', 'HK$2,399', '142', '<span class="dash-badge green">Activo</span>'],
+          ['Organizador de Escritorio Bambú', 'HK$459', '87', '<span class="dash-badge green">Activo</span>'],
+          ['Alfombrilla Ergonómica', 'HK$189', '0', '<span class="dash-badge red">Agotado</span>'],
+          ['Hub USB-C Pro 7 en 1', 'HK$699', '53', '<span class="dash-badge green">Activo</span>'],
+          ['Cartera Minimalista de Cuero', 'HK$349', '216', '<span class="dash-badge yellow">Borrador</span>']
+        ], '2fr 1fr 1fr 1fr'),
+
+      pages: () => renderTable('Páginas',
+        ['Página', 'URL', 'Estado'],
+        [
+          ['Inicio', '/', '<span class="dash-badge green">Publicada</span>'],
+          ['Sobre Nosotros', '/sobre', '<span class="dash-badge green">Publicada</span>'],
+          ['Preguntas Frecuentes', '/faq', '<span class="dash-badge green">Publicada</span>'],
+          ['Política de Envío', '/envio', '<span class="dash-badge yellow">Borrador</span>'],
+          ['Devoluciones', '/devoluciones', '<span class="dash-badge green">Publicada</span>']
+        ], '2fr 2fr 1fr'),
+
+      design: () => renderDesign('Tema — Moderno Minimalista',
+        ['#6366f1', '#0ea5e9', '#f97316', '#10b981', '#f43f5e', '#8b5cf6'],
+        [['Títulos', 'Space Grotesk — Negrita'], ['Cuerpo', 'Inter — Regular'], ['Acento', 'Índigo 500 (#6366f1)']]),
+
+      payments: () => renderToggles('Pasarelas de Pago', [
+        ['Stripe', true], ['PayPal', true], ['Adyen', false],
+        ['AlipayHK', true], ['Octopus', true], ['PayMe (HSBC)', false],
+        ['PayDollar', false], ['Airwallex', true], ['Monobank', false]
+      ]),
+
+      features: () => renderToggles('Funciones de la Tienda', [
+        ['Modo Oscuro', true], ['Multi-idioma (EN, ES, UK)', true],
+        ['Reseñas de Clientes', true], ['Lista de Deseos', false],
+        ['Chat en Vivo', true], ['Banner de Cookies', true],
+        ['Login Social', false], ['Alertas de Inventario', true]
+      ]),
+
+      analytics: () => renderMetrics([
+        ['Tasa de Conversión', '3.6%', '+0.4%', 'positive'],
+        ['Valor Medio del Pedido', 'HK$228', '+11.2%', 'positive'],
+        ['Tasa de Rebote', '42.1%', '-3.8%', 'positive']
+      ]) + `<div class="dash-chart">${CHART_BAR}</div>`,
+
+      support: () => renderTable('Tickets de Soporte',
+        ['ID', 'Asunto', 'Estado', 'Actualizado'],
+        [
+          ['#1042', 'Retraso en envío a Kowloon', '<span class="dash-badge yellow">Pendiente</span>', 'Hace 2h'],
+          ['#1041', 'Pago no procesado', '<span class="dash-badge green">Resuelto</span>', 'Hace 5h'],
+          ['#1039', 'Artículo incorrecto', '<span class="dash-badge red">Urgente</span>', 'Hace 1d'],
+          ['#1038', 'Solicitud de reembolso', '<span class="dash-badge green">Resuelto</span>', 'Hace 2d']
+        ], '80px 2fr 1fr 1fr'),
+
+      email: () => renderTable('Bandeja de Entrada',
+        ['De', 'Asunto', 'Hora'],
+        [
+          ['<strong>John Chan</strong>', 'Re: Confirmación pedido #8841', '11:32'],
+          ['<strong>Sarah Wong</strong>', 'Consulta de colaboración', '10:15'],
+          ['<strong>Stripe</strong>', 'Resumen semanal de pagos', '9:00'],
+          ['<strong>Mike Liu</strong>', '¿Descuento por pedido grande?', 'Ayer'],
+          ['<strong>Bot de Soporte</strong>', 'Nuevo ticket #1042 asignado', 'Ayer']
+        ], '1.5fr 2.5fr 1fr')
+    },
+
+    uk: {
+      overview: () => renderMetrics([
+        ['Дохід (MTD)', 'HK$284,520', '+18.3%', 'positive'],
+        ['Замовлення', '1,247', '+12.1%', 'positive'],
+        ['Відвідувачі', '34.2K', '+8.7%', 'positive'],
+        ['Тікети', '3', 'Відкриті', 'neutral']
+      ]) + `<div class="dash-chart">${CHART_SVG}</div>`,
+
+      products: () => renderTable('Товари (24)',
+        ['Товар', 'Ціна', 'Залишок', 'Статус'],
+        [
+          ['Бездротові навушники преміум', 'HK$2,399', '142', '<span class="dash-badge green">Активний</span>'],
+          ['Бамбуковий органайзер', 'HK$459', '87', '<span class="dash-badge green">Активний</span>'],
+          ['Ергономічний килимок', 'HK$189', '0', '<span class="dash-badge red">Немає в наявності</span>'],
+          ['USB-C хаб Pro 7-в-1', 'HK$699', '53', '<span class="dash-badge green">Активний</span>'],
+          ['Мінімалістичний шкіряний гаманець', 'HK$349', '216', '<span class="dash-badge yellow">Чернетка</span>']
+        ], '2fr 1fr 1fr 1fr'),
+
+      pages: () => renderTable('Сторінки',
+        ['Сторінка', 'URL', 'Статус'],
+        [
+          ['Головна', '/', '<span class="dash-badge green">Опублікована</span>'],
+          ['Про нас', '/про-нас', '<span class="dash-badge green">Опублікована</span>'],
+          ['FAQ', '/faq', '<span class="dash-badge green">Опублікована</span>'],
+          ['Доставка', '/доставка', '<span class="dash-badge yellow">Чернетка</span>'],
+          ['Повернення', '/повернення', '<span class="dash-badge green">Опублікована</span>']
+        ], '2fr 2fr 1fr'),
+
+      design: () => renderDesign('Тема — Сучасний мінімалізм',
+        ['#6366f1', '#0ea5e9', '#f97316', '#10b981', '#f43f5e', '#8b5cf6'],
+        [['Заголовки', 'Space Grotesk — Жирний'], ['Текст', 'Inter — Звичайний'], ['Акцент', 'Індіго 500 (#6366f1)']]),
+
+      payments: () => renderToggles('Платіжні шлюзи', [
+        ['Stripe', true], ['PayPal', true], ['Adyen', false],
+        ['AlipayHK', true], ['Octopus', true], ['PayMe (HSBC)', false],
+        ['PayDollar', false], ['Airwallex', true], ['Monobank', false]
+      ]),
+
+      features: () => renderToggles('Функції магазину', [
+        ['Темна тема', true], ['Мультимовність (EN, ES, UK)', true],
+        ['Відгуки клієнтів', true], ['Список бажань', false],
+        ['Живий чат', true], ['Банер файлів cookie', true],
+        ['Вхід через соцмережі', false], ['Сповіщення про залишки', true]
+      ]),
+
+      analytics: () => renderMetrics([
+        ['Конверсія', '3.6%', '+0.4%', 'positive'],
+        ['Середній чек', 'HK$228', '+11.2%', 'positive'],
+        ['Відмови', '42.1%', '-3.8%', 'positive']
+      ]) + `<div class="dash-chart">${CHART_BAR}</div>`,
+
+      support: () => renderTable('Тікети підтримки',
+        ['ID', 'Тема', 'Статус', 'Оновлено'],
+        [
+          ['#1042', 'Затримка доставки в Коулун', '<span class="dash-badge yellow">Очікує</span>', '2 год тому'],
+          ['#1041', 'Оплата не пройшла', '<span class="dash-badge green">Вирішено</span>', '5 год тому'],
+          ['#1039', 'Отримано не той товар', '<span class="dash-badge red">Терміново</span>', '1 день тому'],
+          ['#1038', 'Запит на повернення коштів', '<span class="dash-badge green">Вирішено</span>', '2 дні тому']
+        ], '80px 2fr 1fr 1fr'),
+
+      email: () => renderTable('Вхідні',
+        ['Від', 'Тема', 'Час'],
+        [
+          ['<strong>John Chan</strong>', 'Re: Підтвердження замовлення #8841', '11:32'],
+          ['<strong>Sarah Wong</strong>', 'Запит на партнерство', '10:15'],
+          ['<strong>Stripe</strong>', 'Тижневий звіт виплат', '9:00'],
+          ['<strong>Mike Liu</strong>', 'Знижка на гуртове замовлення?', 'Вчора'],
+          ['<strong>Бот підтримки</strong>', 'Новий тікет #1042 призначено', 'Вчора']
+        ], '1.5fr 2.5fr 1fr')
+    }
+  };
+
+  function initDashboard() {
+    const sidebar = document.getElementById('dash-sidebar');
+    const main = document.getElementById('dash-main');
+    if (!sidebar || !main) return;
+
+    const items = sidebar.querySelectorAll('.dash-nav-item');
+    const tabData = T[LANG] || T.en;
+
+    items.forEach(item => {
+      item.addEventListener('click', () => {
+        const tab = item.dataset.tab;
+        if (!tab || !tabData[tab]) return;
+
+        items.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+
+        main.classList.add('fading');
+        setTimeout(() => {
+          main.innerHTML = tabData[tab]();
+          main.classList.remove('fading');
+        }, 150);
+      });
+    });
+  }
+
+  initDashboard();
+
+  /* ============================================================
+     CONTACT FORM
+     ============================================================ */
+
+  const formMessages = {
+    en: { sending: 'Sending…', success: 'Message sent! We\'ll be in touch soon.', error: 'Something went wrong. Please try again.', configure: 'Contact form not configured yet.' },
+    es: { sending: 'Enviando…', success: '¡Mensaje enviado! Nos pondremos en contacto pronto.', error: 'Algo salió mal. Inténtalo de nuevo.', configure: 'Formulario de contacto aún no configurado.' },
+    uk: { sending: 'Надсилання…', success: 'Повідомлення надіслано! Ми зв\'яжемося з вами.', error: 'Щось пішло не так. Спробуйте ще раз.', configure: 'Контактну форму ще не налаштовано.' }
+  };
+
+  const msg = formMessages[LANG] || formMessages.en;
+
+  async function sendFormspree(data, formId) {
+    const res = await fetch(`https://formspree.io/f/${formId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) throw new Error('Formspree error');
+    return res.json();
+  }
+
+  async function sendEmailJS(data, cfg) {
+    if (!window.emailjs) {
+      const s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+      document.head.appendChild(s);
+      await new Promise((resolve, reject) => { s.onload = resolve; s.onerror = reject; });
+      window.emailjs.init(cfg.publicKey);
+    }
+    return window.emailjs.send(cfg.serviceId, cfg.templateId, data);
+  }
+
+  async function sendCustom(data, cfg) {
+    const res = await fetch(cfg.endpoint, {
+      method: 'POST',
+      headers: cfg.headers || { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) throw new Error('API error');
+    return res.json();
+  }
+
   const form = document.getElementById('contact-form');
-  form?.addEventListener('submit', (e) => {
+  form?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email = form.querySelector('input[type="email"]');
-    if (email?.value) {
-      const btn = form.querySelector('button[type="submit"]');
-      const originalText = btn.textContent;
-      btn.textContent = 'Thank you!';
-      btn.disabled = true;
-      email.value = '';
-      setTimeout(() => {
-        btn.textContent = originalText;
-        btn.disabled = false;
-      }, 3000);
+
+    const cfg = window.ANTHILL_CONFIG?.contact;
+    const statusEl = document.getElementById('form-status');
+    const btn = form.querySelector('button[type="submit"]');
+    const originalText = btn.textContent;
+
+    if (!cfg || !cfg.provider || cfg[cfg.provider]?.formId === 'YOUR_FORM_ID' ||
+        cfg[cfg.provider]?.serviceId === 'YOUR_SERVICE_ID' ||
+        cfg[cfg.provider]?.endpoint === 'https://your-api.example.com/contact') {
+      if (statusEl) { statusEl.textContent = msg.configure; statusEl.className = 'form-status error'; }
+      return;
+    }
+
+    const data = {
+      name: form.querySelector('[name="name"]')?.value || '',
+      email: form.querySelector('[name="email"]')?.value || '',
+      message: form.querySelector('[name="message"]')?.value || ''
+    };
+
+    btn.textContent = msg.sending;
+    btn.disabled = true;
+    if (statusEl) { statusEl.textContent = ''; statusEl.className = 'form-status'; }
+
+    try {
+      if (cfg.provider === 'formspree') await sendFormspree(data, cfg.formspree.formId);
+      else if (cfg.provider === 'emailjs') await sendEmailJS(data, cfg.emailjs);
+      else if (cfg.provider === 'custom') await sendCustom(data, cfg.custom);
+
+      form.reset();
+      if (statusEl) { statusEl.textContent = msg.success; statusEl.className = 'form-status success'; }
+      btn.textContent = originalText;
+      btn.disabled = false;
+    } catch (err) {
+      if (statusEl) { statusEl.textContent = msg.error; statusEl.className = 'form-status error'; }
+      btn.textContent = originalText;
+      btn.disabled = false;
     }
   });
 
