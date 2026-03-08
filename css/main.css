@@ -33,6 +33,13 @@ h1,h2,h3,h4{font-family:'Space Grotesk','Inter',sans-serif;line-height:1.2;font-
 .btn-icon{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:var(--radius-sm);color:var(--text-secondary);transition:all var(--transition);cursor:pointer}
 .btn-icon:hover{background:var(--bg-alt);color:var(--text)}
 
+/* ---------- LANGUAGE SWITCHER ---------- */
+.lang-switcher{display:flex;align-items:center;gap:4px;margin-right:4px}
+.lang-switcher a{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;font-size:1.2rem;line-height:1;transition:all var(--transition);opacity:.55;text-decoration:none}
+.lang-switcher a:hover{opacity:.85;transform:scale(1.15)}
+.lang-switcher a.active{opacity:1;transform:scale(1.15);box-shadow:0 0 0 2px var(--accent)}
+@media(max-width:480px){.lang-switcher a{width:28px;height:28px;font-size:1rem}}
+
 /* ---------- NAV ---------- */
 .site-header{position:fixed;top:0;left:0;right:0;z-index:100;background:transparent;transition:background var(--transition),box-shadow var(--transition),backdrop-filter var(--transition)}
 .site-header.scrolled{background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:var(--shadow-sm)}
