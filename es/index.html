@@ -10,32 +10,33 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/theme.css">
   <link rel="stylesheet" href="../css/main.css">
-  <link rel="icon" type="image/png" href="../assets/img/logo.png">
-  <!-- Matomo -->
-  <script>
-    var _paq = window._paq = window._paq || [];
-    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-    _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
-    _paq.push(["setCookieDomain", "*.anthill.hk"]);
-    _paq.push(["setDomains", ["*.anthill.hk","*.www.anthill.hk"]]);
-    _paq.push(["enableCrossDomainLinking"]);
-    _paq.push(['trackPageView']);
-    _paq.push(['enableLinkTracking']);
-    (function() {
-      var u="https://matomo.matumi.anthill.hk/";
-      _paq.push(['setTrackerUrl', u+'matomo.php']);
-      _paq.push(['setSiteId', '4']);
-      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-      g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
-    })();
-  </script>
-  <!-- End Matomo Code -->
+  <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+  <!-- Matomo analytics -->
+  <script src="../js/matomo.js" defer></script>
+  <!-- SEO -->
+  <link rel="canonical" href="https://anthill.hk/es/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://anthill.hk/es/">
+  <meta property="og:title" content="Anthill HK — eCommerce Llave en Mano, Lanzado en Minutos">
+  <meta property="og:description" content="Anthill HK construye tiendas eCommerce totalmente gestionadas y llave en mano.">
+  <meta property="og:image" content="https://anthill.hk/assets/img/logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Anthill HK — eCommerce Llave en Mano">
+  <meta name="twitter:description" content="Plataforma eCommerce llave en mano para negocios de Hong Kong.">
+  <meta name="twitter:image" content="https://anthill.hk/assets/img/logo.png">
+  <!-- hreflang -->
+  <link rel="alternate" hreflang="en" href="https://anthill.hk/">
+  <link rel="alternate" hreflang="es" href="https://anthill.hk/es/">
+  <link rel="alternate" hreflang="uk" href="https://anthill.hk/uk/">
+  <link rel="alternate" hreflang="x-default" href="https://anthill.hk/">
 </head>
 <body>
   <!-- Matomo: image tracking when JavaScript is disabled -->
   <noscript>
     <p><img referrerpolicy="no-referrer-when-downgrade" src="https://matomo.matumi.anthill.hk/matomo.php?idsite=4&amp;rec=1" style="border:0;" alt="" /></p>
   </noscript>
+  <!-- Skip to main content -->
+  <a class="skip-link" href="#main">Saltar al contenido principal</a>
   <!-- ====== NAV ====== -->
   <header class="site-header" id="site-header">
     <div class="container nav-wrap">
@@ -53,10 +54,10 @@
         </ul>
       </nav>
       <div class="nav-actions">
-        <div class="lang-switcher" aria-label="Idioma">
-          <a href="/" title="English"><svg viewBox="0 0 60 40" width="24" height="16"><rect width="60" height="40" fill="#012169"/><path d="M0 0l60 40M60 0L0 40" stroke="#fff" stroke-width="8"/><path d="M0 0l60 40M60 0L0 40" stroke="#C8102E" stroke-width="4"/><path d="M30 0v40M0 20h60" stroke="#fff" stroke-width="12"/><path d="M30 0v40M0 20h60" stroke="#C8102E" stroke-width="7"/></svg></a>
-          <a href="/es/" class="active" title="Español"><svg viewBox="0 0 60 40" width="24" height="16"><rect width="60" height="10" fill="#AA151B"/><rect y="10" width="60" height="20" fill="#F1BF00"/><rect y="30" width="60" height="10" fill="#AA151B"/></svg></a>
-          <a href="/uk/" title="Українська"><svg viewBox="0 0 60 40" width="24" height="16"><rect width="60" height="20" fill="#005BBB"/><rect y="20" width="60" height="20" fill="#FFD500"/></svg></a>
+        <div class="lang-switcher" aria-label="Idioma del sitio, cambiar a:">
+          <a href="/" title="English" aria-label="Cambiar a English"><svg viewBox="0 0 60 40" width="24" height="16"><rect width="60" height="40" fill="#012169"/><path d="M0 0l60 40M60 0L0 40" stroke="#fff" stroke-width="8"/><path d="M0 0l60 40M60 0L0 40" stroke="#C8102E" stroke-width="4"/><path d="M30 0v40M0 20h60" stroke="#fff" stroke-width="12"/><path d="M30 0v40M0 20h60" stroke="#C8102E" stroke-width="7"/></svg></a>
+          <a href="/es/" class="active" title="Español" aria-label="Español (página actual)"><svg viewBox="0 0 60 40" width="24" height="16"><rect width="60" height="10" fill="#AA151B"/><rect y="10" width="60" height="20" fill="#F1BF00"/><rect y="30" width="60" height="10" fill="#AA151B"/></svg></a>
+          <a href="/uk/" title="Українська" aria-label="Перейти на Українську"><svg viewBox="0 0 60 40" width="24" height="16"><rect width="60" height="20" fill="#005BBB"/><rect y="20" width="60" height="20" fill="#FFD500"/></svg></a>
         </div>
         <button class="btn-icon theme-toggle" id="theme-toggle" aria-label="Alternar modo oscuro" title="Alternar modo oscuro">
           <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" fill="none"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></g></svg>
@@ -70,6 +71,7 @@
     </div>
   </header>
 
+  <main id="main">
   <!-- ====== HERO ====== -->
   <section class="hero" id="hero">
     <div class="hero-bg-photo" aria-hidden="true"></div>
@@ -202,7 +204,7 @@
               <div class="dash-nav-item" data-tab="support">Soporte</div>
               <div class="dash-nav-item" data-tab="email">Email</div>
             </aside>
-            <main class="dash-main" id="dash-main">
+            <div class="dash-main" id="dash-main">
               <div class="dash-cards">
                 <div class="dash-metric"><span class="dash-metric-label">Ingresos (MTD)</span><span class="dash-metric-value">HK$284,520</span><span class="dash-metric-change positive">+18.3%</span></div>
                 <div class="dash-metric"><span class="dash-metric-label">Pedidos</span><span class="dash-metric-value">1,247</span><span class="dash-metric-change positive">+12.1%</span></div>
@@ -210,7 +212,7 @@
                 <div class="dash-metric"><span class="dash-metric-label">Tickets</span><span class="dash-metric-value">3</span><span class="dash-metric-change neutral">Abiertos</span></div>
               </div>
               <div class="dash-chart"><svg viewBox="0 0 600 160" preserveAspectRatio="none" class="chart-line"><polyline points="0,140 50,120 100,130 150,90 200,100 250,60 300,70 350,40 400,55 450,30 500,45 550,20 600,10" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="0,140 50,120 100,130 150,90 200,100 250,60 300,70 350,40 400,55 450,30 500,45 550,20 600,10" fill="url(#chart-fill)" stroke="none"/><defs><linearGradient id="chart-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--accent)" stop-opacity="0.25"/><stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/></linearGradient></defs></svg></div>
-            </main>
+            </div>
           </div>
         </div>
       </div>
@@ -234,20 +236,20 @@
       <div class="pricing-grid">
         <div class="pricing-card" data-animate>
           <div class="pricing-tier">Starter</div>
-          <div class="pricing-price"><span class="currency">€</span>89<span class="period">/mes</span></div>
+          <div class="pricing-price"><span class="currency">HK$</span>799<span class="period">/mes</span></div>
           <ul class="pricing-features"><li>1 Tienda</li><li>Hasta 50 Productos</li><li>Subdominio gratuito</li><li>3 Pasarelas de Pago</li><li>Analíticas Básicas</li><li>Soporte por Email</li><li>SSL y CDN Incluidos</li></ul>
           <a href="#contact" class="btn btn-outline btn-block">Empezar</a>
         </div>
         <div class="pricing-card featured" data-animate>
           <div class="pricing-badge">Más Popular</div>
           <div class="pricing-tier">Growth</div>
-          <div class="pricing-price"><span class="currency">€</span>549<span class="period">/mes</span></div>
+          <div class="pricing-price"><span class="currency">HK$</span>4,999<span class="period">/mes</span></div>
           <ul class="pricing-features"><li>3 Tiendas</li><li>Productos Ilimitados</li><li>Dominio Personalizado</li><li>Todas las Pasarelas</li><li>Panel Grafana</li><li>Email Gestionado (5 buzones)</li><li>Soporte Prioritario</li><li>Constructor de Temas IA</li></ul>
           <a href="#contact" class="btn btn-primary btn-block">Prueba Gratis</a>
         </div>
         <div class="pricing-card" data-animate>
           <div class="pricing-tier">Enterprise</div>
-          <div class="pricing-price"><span class="currency">€</span>1,649<span class="period">/mes</span></div>
+          <div class="pricing-price"><span class="currency">HK$</span>14,999<span class="period">/mes</span></div>
           <ul class="pricing-features"><li>Tiendas Ilimitadas</li><li>Productos Ilimitados</li><li>Múltiples Dominios</li><li>Todas las Pasarelas</li><li>Analíticas Avanzadas</li><li>Email Gestionado (ilimitado)</li><li>Gestor de Cuenta Dedicado</li><li>Integraciones Personalizadas</li><li>SLA 99.99% Disponibilidad</li></ul>
           <a href="#contact" class="btn btn-outline btn-block">Contactar Ventas</a>
         </div>
@@ -273,11 +275,12 @@
             <button type="submit" class="btn btn-primary btn-lg btn-block">Enviar Mensaje</button>
           </div>
           <p class="form-note">Plan gratuito para siempre disponible. Sin tarjeta de crédito.</p>
-          <p class="form-status" id="form-status"></p>
+          <p class="form-status" id="form-status" aria-live="polite" aria-atomic="true"></p>
         </form>
       </div>
     </div>
   </section>
+  </main>
 
   <!-- ====== FOOTER ====== -->
   <footer class="site-footer">
@@ -293,7 +296,7 @@
       </div>
       <div class="footer-bottom">
         <p>&copy; 2026 Anthill HK Limited. Todos los derechos reservados.</p>
-        <p class="photo-credit">Foto hero por <a href="https://www.pexels.com/@philipp-birmes-561258/" target="_blank" rel="noopener">Philipp Birmes</a> vía <a href="https://www.pexels.com/photo/low-angle-photo-of-four-high-rise-curtain-wall-buildings-under-white-clouds-and-blue-sky-830891/" target="_blank" rel="noopener">Pexels</a></p>
+        <p class="photo-credit">Foto hero por <a href="https://www.pexels.com/@philipp-birmes-561258/" target="_blank" rel="noopener" aria-label="Philipp Birmes en Pexels">Philipp Birmes</a> vía <a href="https://www.pexels.com/photo/low-angle-photo-of-four-high-rise-curtain-wall-buildings-under-white-clouds-and-blue-sky-830891/" target="_blank" rel="noopener" aria-label="Pexels foto: Hong Kong skyline">Pexels</a></p>
       </div>
     </div>
   </footer>

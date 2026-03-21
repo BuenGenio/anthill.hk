@@ -45,9 +45,21 @@
   const menuBtn = document.getElementById('mobile-menu-toggle');
   const nav = document.getElementById('main-nav');
 
+  function closeMobileNav() {
+    nav?.classList.remove('open');
+    menuBtn?.setAttribute('aria-expanded', 'false');
+    menuBtn?.focus();
+  }
+
+  function openMobileNav() {
+    nav?.classList.add('open');
+    menuBtn?.setAttribute('aria-expanded', 'true');
+  }
+
   menuBtn?.addEventListener('click', () => {
-    const open = nav.classList.toggle('open');
-    menuBtn.setAttribute('aria-expanded', String(open));
+    const isOpen = nav?.classList.contains('open');
+    if (isOpen) closeMobileNav();
+    else openMobileNav();
   });
 
   nav?.querySelectorAll('a').forEach((a) => {
@@ -55,6 +67,30 @@
       nav.classList.remove('open');
       menuBtn?.setAttribute('aria-expanded', 'false');
     });
+  });
+
+  // Close on Escape key
+  nav?.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav.classList.contains('open')) {
+      closeMobileNav();
+    }
+  });
+
+  // Focus trap inside mobile nav
+  const FOCUSABLE_NAV = 'a, button, [tabindex]:not([tabindex="-1"])';
+  nav?.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab' || !nav.classList.contains('open')) return;
+    const focusables = [...nav.querySelectorAll(FOCUSABLE_NAV)].filter(el => !el.disabled);
+    if (!focusables.length) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
   });
 
   /* ---- Active Nav Highlight ---- */

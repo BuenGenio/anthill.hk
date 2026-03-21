@@ -10,32 +10,50 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/theme.css">
   <link rel="stylesheet" href="css/main.css">
-  <link rel="icon" type="image/png" href="assets/img/logo.png">
-  <!-- Matomo -->
-  <script>
-    var _paq = window._paq = window._paq || [];
-    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-    _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
-    _paq.push(["setCookieDomain", "*.anthill.hk"]);
-    _paq.push(["setDomains", ["*.anthill.hk","*.www.anthill.hk"]]);
-    _paq.push(["enableCrossDomainLinking"]);
-    _paq.push(['trackPageView']);
-    _paq.push(['enableLinkTracking']);
-    (function() {
-      var u="https://matomo.matumi.anthill.hk/";
-      _paq.push(['setTrackerUrl', u+'matomo.php']);
-      _paq.push(['setSiteId', '4']);
-      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-      g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
-    })();
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <!-- Matomo analytics -->
+  <script src="js/matomo.js" defer></script>
+  <!-- SEO -->
+  <link rel="canonical" href="https://anthill.hk/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://anthill.hk/">
+  <meta property="og:title" content="Anthill HK — Turn-Key eCommerce, Launched in Minutes">
+  <meta property="og:description" content="Anthill HK builds fully managed, turn-key eCommerce stores. Pick a theme, add products, connect payments, launch — we handle the rest.">
+  <meta property="og:image" content="https://anthill.hk/assets/img/logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Anthill HK — Turn-Key eCommerce, Launched in Minutes">
+  <meta name="twitter:description" content="Fully managed eCommerce stores. Launch in minutes.">
+  <meta name="twitter:image" content="https://anthill.hk/assets/img/logo.png">
+  <!-- hreflang -->
+  <link rel="alternate" hreflang="en" href="https://anthill.hk/">
+  <link rel="alternate" hreflang="es" href="https://anthill.hk/es/">
+  <link rel="alternate" hreflang="uk" href="https://anthill.hk/uk/">
+  <link rel="alternate" hreflang="x-default" href="https://anthill.hk/">
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Anthill HK",
+    "applicationCategory": "BusinessApplication",
+    "description": "Turn-key eCommerce platform for Hong Kong businesses",
+    "url": "https://anthill.hk",
+    "offers": {
+      "@type": "Offer",
+      "price": "799",
+      "priceCurrency": "HKD",
+      "availability": "https://schema.org/InStock"
+    }
+  }
   </script>
-  <!-- End Matomo Code -->
 </head>
 <body>
   <!-- Matomo: image tracking when JavaScript is disabled -->
   <noscript>
     <p><img referrerpolicy="no-referrer-when-downgrade" src="https://matomo.matumi.anthill.hk/matomo.php?idsite=4&amp;rec=1" style="border:0;" alt="" /></p>
   </noscript>
+  <!-- Skip to main content -->
+  <a class="skip-link" href="#main">Skip to main content</a>
   <!-- ====== NAV ====== -->
   <header class="site-header" id="site-header">
     <div class="container nav-wrap">
@@ -53,23 +71,24 @@
         </ul>
       </nav>
       <div class="nav-actions">
-        <div class="lang-switcher" aria-label="Language">
-          <a href="/" class="active" title="English"><svg viewBox="0 0 60 40" width="24" height="16"><rect width="60" height="40" fill="#012169"/><path d="M0 0l60 40M60 0L0 40" stroke="#fff" stroke-width="8"/><path d="M0 0l60 40M60 0L0 40" stroke="#C8102E" stroke-width="4"/><path d="M30 0v40M0 20h60" stroke="#fff" stroke-width="12"/><path d="M30 0v40M0 20h60" stroke="#C8102E" stroke-width="7"/></svg></a>
-          <a href="/es/" title="Español"><svg viewBox="0 0 60 40" width="24" height="16"><rect width="60" height="10" fill="#AA151B"/><rect y="10" width="60" height="20" fill="#F1BF00"/><rect y="30" width="60" height="10" fill="#AA151B"/></svg></a>
-          <a href="/uk/" title="Українська"><svg viewBox="0 0 60 40" width="24" height="16"><rect width="60" height="20" fill="#005BBB"/><rect y="20" width="60" height="20" fill="#FFD500"/></svg></a>
+        <div class="lang-switcher" aria-label="Site language, switch to:">
+          <a href="/" class="active" title="English" aria-label="Switch to English"><svg viewBox="0 0 60 40" width="24" height="16"><rect width="60" height="40" fill="#012169"/><path d="M0 0l60 40M60 0L0 40" stroke="#fff" stroke-width="8"/><path d="M0 0l60 40M60 0L0 40" stroke="#C8102E" stroke-width="4"/><path d="M30 0v40M0 20h60" stroke="#fff" stroke-width="12"/><path d="M30 0v40M0 20h60" stroke="#C8102E" stroke-width="7"/></svg></a>
+          <a href="/es/" title="Español" aria-label="Cambiar a Español"><svg viewBox="0 0 60 40" width="24" height="16"><rect width="60" height="10" fill="#AA151B"/><rect y="10" width="60" height="20" fill="#F1BF00"/><rect y="30" width="60" height="10" fill="#AA151B"/></svg></a>
+          <a href="/uk/" title="Українська" aria-label="Перейти на Українську"><svg viewBox="0 0 60 40" width="24" height="16"><rect width="60" height="20" fill="#005BBB"/><rect y="20" width="60" height="20" fill="#FFD500"/></svg></a>
         </div>
         <button class="btn-icon theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
           <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" fill="none"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></g></svg>
           <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/></svg>
         </button>
         <a href="#contact" class="btn btn-primary btn-sm">Get Started</a>
-        <button class="btn-icon mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <button class="btn-icon mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav" aria-haspopup="true">
           <span></span><span></span><span></span>
         </button>
       </div>
     </div>
   </header>
 
+  <main id="main">
   <!-- ====== HERO ====== -->
   <section class="hero" id="hero">
     <div class="hero-bg-photo" aria-hidden="true"></div>
@@ -240,7 +259,7 @@
               <div class="dash-nav-item" data-tab="support">Support</div>
               <div class="dash-nav-item" data-tab="email">Email</div>
             </aside>
-            <main class="dash-main" id="dash-main">
+            <div class="dash-main" id="dash-main">
               <div class="dash-cards">
                 <div class="dash-metric">
                   <span class="dash-metric-label">Revenue (MTD)</span>
@@ -270,7 +289,7 @@
                   <defs><linearGradient id="chart-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--accent)" stop-opacity="0.25"/><stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/></linearGradient></defs>
                 </svg>
               </div>
-            </main>
+            </div>
           </div>
         </div>
       </div>
@@ -372,11 +391,12 @@
             <button type="submit" class="btn btn-primary btn-lg btn-block">Send Message</button>
           </div>
           <p class="form-note">Free forever plan available. No credit card required.</p>
-          <p class="form-status" id="form-status"></p>
+          <p class="form-status" id="form-status" aria-live="polite" aria-atomic="true"></p>
         </form>
       </div>
     </div>
   </section>
+  </main>
 
   <!-- ====== FOOTER ====== -->
   <footer class="site-footer">
@@ -418,7 +438,7 @@
       </div>
       <div class="footer-bottom">
         <p>&copy; 2026 Anthill HK Limited. All rights reserved.</p>
-        <p class="photo-credit">Hero photo by <a href="https://www.pexels.com/@philipp-birmes-561258/" target="_blank" rel="noopener">Philipp Birmes</a> via <a href="https://www.pexels.com/photo/low-angle-photo-of-four-high-rise-curtain-wall-buildings-under-white-clouds-and-blue-sky-830891/" target="_blank" rel="noopener">Pexels</a></p>
+        <p class="photo-credit">Hero photo by <a href="https://www.pexels.com/@philipp-birmes-561258/" target="_blank" rel="noopener" aria-label="Philipp Birmes on Pexels">Philipp Birmes</a> via <a href="https://www.pexels.com/photo/low-angle-photo-of-four-high-rise-curtain-wall-buildings-under-white-clouds-and-blue-sky-830891/" target="_blank" rel="noopener" aria-label="Pexels photo: Hong Kong skyline">Pexels</a></p>
       </div>
     </div>
   </footer>
