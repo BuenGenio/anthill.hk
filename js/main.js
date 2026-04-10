@@ -420,6 +420,77 @@
           ['<strong>Mike Liu</strong>', 'Знижка на гуртове замовлення?', 'Вчора'],
           ['<strong>Бот підтримки</strong>', 'Новий тікет #1042 призначено', 'Вчора']
         ], '1.5fr 2.5fr 1fr')
+    },
+
+    'zh-Hant-HK': {
+      overview: () => renderMetrics([
+        ['收入 (本月至今)', 'HK$284,520', '+18.3%', 'positive'],
+        ['訂單', '1,247', '+12.1%', 'positive'],
+        ['訪客', '34.2K', '+8.7%', 'positive'],
+        ['工單', '3', '待處理', 'neutral']
+      ]) + `<div class="dash-chart">${CHART_SVG}</div>`,
+
+      products: () => renderTable('產品 (24)',
+        ['產品', '價格', '庫存', '狀態'],
+        [
+          ['高級無線耳機', 'HK$2,399', '142', '<span class="dash-badge green">上架中</span>'],
+          ['竹製桌面收納架', 'HK$459', '87', '<span class="dash-badge green">上架中</span>'],
+          ['人體工學滑鼠墊', 'HK$189', '0', '<span class="dash-badge red">缺貨</span>'],
+          ['USB-C 七合一擴展塢', 'HK$699', '53', '<span class="dash-badge green">上架中</span>'],
+          ['極簡真皮銀包', 'HK$349', '216', '<span class="dash-badge yellow">草稿</span>']
+        ], '2fr 1fr 1fr 1fr'),
+
+      pages: () => renderTable('頁面',
+        ['頁面', '網址', '狀態'],
+        [
+          ['主頁', '/', '<span class="dash-badge green">已發佈</span>'],
+          ['關於我們', '/about', '<span class="dash-badge green">已發佈</span>'],
+          ['常見問題', '/faq', '<span class="dash-badge green">已發佈</span>'],
+          ['運送政策', '/shipping', '<span class="dash-badge yellow">草稿</span>'],
+          ['退貨政策', '/returns', '<span class="dash-badge green">已發佈</span>']
+        ], '2fr 2fr 1fr'),
+
+      design: () => renderDesign('主題 — 現代極簡',
+        ['#6366f1', '#0ea5e9', '#f97316', '#10b981', '#f43f5e', '#8b5cf6'],
+        [['標題', 'Space Grotesk — 粗體'], ['正文', 'Inter — 常規'], ['強調色', 'Indigo 500 (#6366f1)']]),
+
+      payments: () => renderToggles('支付網關', [
+        ['Stripe', true], ['PayPal', true], ['Adyen', false],
+        ['AlipayHK', true], ['八達通', true], ['PayMe (HSBC)', false],
+        ['PayDollar', false], ['Airwallex', true], ['Monobank', false]
+      ]),
+
+      features: () => renderToggles('商店功能', [
+        ['深色模式', true], ['多語言 (EN, ES, UK, 繁中)', true],
+        ['顧客評價', true], ['願望清單', false],
+        ['即時聊天', true], ['Cookie 橫幅', true],
+        ['社交登入', false], ['庫存提醒', true]
+      ]),
+
+      analytics: () => renderMetrics([
+        ['轉換率', '3.6%', '+0.4%', 'positive'],
+        ['平均訂單金額', 'HK$228', '+11.2%', 'positive'],
+        ['跳出率', '42.1%', '-3.8%', 'positive']
+      ]) + `<div class="dash-chart">${CHART_BAR}</div>`,
+
+      support: () => renderTable('支援工單',
+        ['編號', '主題', '狀態', '更新'],
+        [
+          ['#1042', '九龍區配送延遲', '<span class="dash-badge yellow">等待中</span>', '2小時前'],
+          ['#1041', '付款失敗', '<span class="dash-badge green">已解決</span>', '5小時前'],
+          ['#1039', '收到錯誤商品', '<span class="dash-badge red">緊急</span>', '1日前'],
+          ['#1038', '退款申請', '<span class="dash-badge green">已解決</span>', '2日前']
+        ], '80px 2fr 1fr 1fr'),
+
+      email: () => renderTable('收件匣',
+        ['寄件人', '主題', '時間'],
+        [
+          ['<strong>John Chan</strong>', 'Re: 訂單 #8841 確認', '11:32'],
+          ['<strong>Sarah Wong</strong>', '合作查詢', '10:15'],
+          ['<strong>Stripe</strong>', '每週付款摘要', '9:00'],
+          ['<strong>Mike Liu</strong>', '大量訂購折扣？', '昨日'],
+          ['<strong>支援機械人</strong>', '新工單 #1042 已指派', '昨日']
+        ], '1.5fr 2.5fr 1fr')
     }
   };
 
@@ -457,7 +528,8 @@
   const formMessages = {
     en: { sending: 'Sending…', success: 'Message sent! We\'ll be in touch soon.', error: 'Something went wrong. Please try again.', configure: 'Contact form not configured yet.' },
     es: { sending: 'Enviando…', success: '¡Mensaje enviado! Nos pondremos en contacto pronto.', error: 'Algo salió mal. Inténtalo de nuevo.', configure: 'Formulario de contacto aún no configurado.' },
-    uk: { sending: 'Надсилання…', success: 'Повідомлення надіслано! Ми зв\'яжемося з вами.', error: 'Щось пішло не так. Спробуйте ще раз.', configure: 'Контактну форму ще не налаштовано.' }
+    uk: { sending: 'Надсилання…', success: 'Повідомлення надіслано! Ми зв\'яжемося з вами.', error: 'Щось пішло не так. Спробуйте ще раз.', configure: 'Контактну форму ще не налаштовано.' },
+    'zh-Hant-HK': { sending: '傳送中⋯', success: '訊息已發送！我們會盡快聯繫您。', error: '發生錯誤，請重試。', configure: '聯絡表單尚未配置。' }
   };
 
   const msg = formMessages[LANG] || formMessages.en;
