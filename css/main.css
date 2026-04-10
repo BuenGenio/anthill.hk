@@ -46,7 +46,7 @@ h1,h2,h3,h4{font-family:'Space Grotesk','Inter',sans-serif;line-height:1.2;font-
 .site-header.scrolled{background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:var(--shadow-sm)}
 .nav-wrap{display:flex;align-items:center;justify-content:space-between;height:72px}
 .logo{display:flex;align-items:center;gap:10px}
-.logo-img{width:40px;height:40px;object-fit:contain;display:inline-block}
+.logo-img{width:40px;height:40px;object-fit:contain;border-radius:var(--radius-sm);box-shadow:0 0 0 1px var(--border);display:inline-block}
 .logo-text{font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:500;color:var(--text)}
 .logo-text strong{font-weight:700}
 .main-nav ul{display:flex;gap:8px}
