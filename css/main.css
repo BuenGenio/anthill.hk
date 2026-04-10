@@ -294,6 +294,10 @@ h1,h2,h3,h4{font-family:'Space Grotesk','Inter',sans-serif;line-height:1.2;font-
 .about-prose p{margin-bottom:1.25rem;font-size:1rem;line-height:1.78;color:var(--text-secondary)}
 .about-prose p:last-child{margin-bottom:0}
 .about-prose strong{color:var(--text);font-weight:600}
+.about-prose h2{font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;color:var(--text);margin:32px 0 14px;letter-spacing:-.02em}
+.about-figure{margin:24px 0 8px;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border);background:var(--bg-alt);box-shadow:var(--shadow-sm)}
+.about-figure img{display:block;width:100%;height:auto;vertical-align:middle}
+.about-figure figcaption{padding:14px 18px;font-size:.88rem;color:var(--text-muted);line-height:1.55;border-top:1px solid var(--border);background:var(--bg-card)}
 .page-about-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:40px}
 @media(max-width:768px){.page-about{padding:96px 0 64px}}
 
