@@ -7,6 +7,21 @@
 
   const LANG = document.documentElement.lang || 'en';
 
+  /* ---- Language Switcher ---- */
+  const langSwitcher = document.querySelector('.lang-switcher');
+  if (langSwitcher) {
+    const langBtn = langSwitcher.querySelector('.lang-switcher-btn');
+    if (langBtn) {
+      langBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        langSwitcher.classList.toggle('open');
+      });
+      document.addEventListener('click', function () {
+        langSwitcher.classList.remove('open');
+      });
+    }
+  }
+
   /* ---- Theme Toggle ---- */
   const root = document.documentElement;
   const themeBtn = document.getElementById('theme-toggle');
