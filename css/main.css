@@ -296,3 +296,22 @@ h1,h2,h3,h4{font-family:'Space Grotesk','Inter',sans-serif;line-height:1.2;font-
 .about-prose strong{color:var(--text);font-weight:600}
 .page-about-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:40px}
 @media(max-width:768px){.page-about{padding:96px 0 64px}}
+
+/* ---------- TEAM / PROFILE ---------- */
+.page-profile{padding:120px 0 80px;min-height:70vh;background:var(--bg-alt)}
+.page-profile .container{max-width:800px}
+.profile-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:clamp(28px,4vw,48px);box-shadow:var(--shadow-sm)}
+.profile-header{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:32px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+.profile-avatar{width:112px;height:112px;border-radius:50%;background:var(--gradient-text);display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:2.25rem;font-weight:700;color:#fff;margin-bottom:20px;letter-spacing:-.02em;flex-shrink:0}
+.profile-header h1{font-size:clamp(1.75rem,4vw,2.25rem);margin-bottom:8px;letter-spacing:-.02em}
+.profile-role{font-size:1.05rem;font-weight:600;color:var(--accent);margin:0}
+.profile-prose p{margin-bottom:1.15rem;font-size:1rem;line-height:1.78;color:var(--text-secondary)}
+.profile-prose p:last-of-type{margin-bottom:0}
+.profile-prose strong{color:var(--text);font-weight:600}
+.profile-prose h2{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:700;color:var(--text);margin:28px 0 14px}
+.profile-specialties{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.profile-specialties li{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:.95rem;color:var(--text-secondary);line-height:1.5}
+.profile-specialties li::before{content:'';width:8px;height:8px;margin-top:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.profile-lang-note{font-size:.9rem;color:var(--text-muted);font-style:italic;margin-top:20px;line-height:1.6}
+.page-profile-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:36px}
+@media(max-width:768px){.page-profile{padding:96px 0 64px}}
