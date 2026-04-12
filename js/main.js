@@ -525,86 +525,20 @@
      CONTACT FORM
      ============================================================ */
 
-  const formMessages = {
-    en: { sending: 'Sending…', success: 'Message sent! We\'ll be in touch soon.', error: 'Something went wrong. Please try again.', configure: 'Contact form not configured yet.' },
-    es: { sending: 'Enviando…', success: '¡Mensaje enviado! Nos pondremos en contacto pronto.', error: 'Algo salió mal. Inténtalo de nuevo.', configure: 'Formulario de contacto aún no configurado.' },
-    uk: { sending: 'Надсилання…', success: 'Повідомлення надіслано! Ми зв\'яжемося з вами.', error: 'Щось пішло не так. Спробуйте ще раз.', configure: 'Контактну форму ще не налаштовано.' },
-    'zh-Hant-HK': { sending: '傳送中⋯', success: '訊息已發送！我們會盡快聯繫您。', error: '發生錯誤，請重試。', configure: '聯絡表單尚未配置。' }
-  };
-
-  const msg = formMessages[LANG] || formMessages.en;
-
-  async function sendFormspree(data, formId) {
-    const res = await fetch(`https://formspree.io/f/${formId}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(data)
-    });
-    if (!res.ok) throw new Error('Formspree error');
-    return res.json();
-  }
-
-  async function sendEmailJS(data, cfg) {
-    if (!window.emailjs) {
-      const s = document.createElement('script');
-      s.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
-      document.head.appendChild(s);
-      await new Promise((resolve, reject) => { s.onload = resolve; s.onerror = reject; });
-      window.emailjs.init(cfg.publicKey);
-    }
-    return window.emailjs.send(cfg.serviceId, cfg.templateId, data);
-  }
-
-  async function sendCustom(data, cfg) {
-    const res = await fetch(cfg.endpoint, {
-      method: 'POST',
-      headers: cfg.headers || { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-    if (!res.ok) throw new Error('API error');
-    return res.json();
-  }
+  const CONTACT_EMAIL = 'business@anthill.hk';
 
   const form = document.getElementById('contact-form');
-  form?.addEventListener('submit', async (e) => {
+  form?.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const cfg = window.ANTHILL_CONFIG?.contact;
-    const statusEl = document.getElementById('form-status');
-    const btn = form.querySelector('button[type="submit"]');
-    const originalText = btn.textContent;
+    const name    = form.querySelector('[name="name"]')?.value.trim() || '';
+    const email   = form.querySelector('[name="email"]')?.value.trim() || '';
+    const message = form.querySelector('[name="message"]')?.value.trim() || '';
 
-    if (!cfg || !cfg.provider || cfg[cfg.provider]?.formId === 'YOUR_FORM_ID' ||
-        cfg[cfg.provider]?.serviceId === 'YOUR_SERVICE_ID' ||
-        cfg[cfg.provider]?.endpoint === 'https://your-api.example.com/contact') {
-      if (statusEl) { statusEl.textContent = msg.configure; statusEl.className = 'form-status error'; }
-      return;
-    }
+    const subject = encodeURIComponent(`Inquiry from ${name}`);
+    const body    = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
 
-    const data = {
-      name: form.querySelector('[name="name"]')?.value || '',
-      email: form.querySelector('[name="email"]')?.value || '',
-      message: form.querySelector('[name="message"]')?.value || ''
-    };
-
-    btn.textContent = msg.sending;
-    btn.disabled = true;
-    if (statusEl) { statusEl.textContent = ''; statusEl.className = 'form-status'; }
-
-    try {
-      if (cfg.provider === 'formspree') await sendFormspree(data, cfg.formspree.formId);
-      else if (cfg.provider === 'emailjs') await sendEmailJS(data, cfg.emailjs);
-      else if (cfg.provider === 'custom') await sendCustom(data, cfg.custom);
-
-      form.reset();
-      if (statusEl) { statusEl.textContent = msg.success; statusEl.className = 'form-status success'; }
-      btn.textContent = originalText;
-      btn.disabled = false;
-    } catch (err) {
-      if (statusEl) { statusEl.textContent = msg.error; statusEl.className = 'form-status error'; }
-      btn.textContent = originalText;
-      btn.disabled = false;
-    }
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
   });
 
   /* ---- Smooth scroll for anchor links ---- */
